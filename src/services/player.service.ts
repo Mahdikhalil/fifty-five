@@ -9,6 +9,7 @@ import { Config } from '../models/config';
 export class PlayerService {
   config: Config;
   constructor(private http: HttpClient) {}
+
   UrlPlayerJson = 'http://cdn.55labs.com/demo/api.json';
 
   getPlayers(): Observable<any> {
@@ -17,6 +18,8 @@ export class PlayerService {
 
   handleMouseMove(e: any, context, john, larry, top, left, num) {
     var ind = 0;
+    var found = false;
+    var i = -1;
     e.preventDefault();
     e.stopPropagation();
 
@@ -24,7 +27,9 @@ export class PlayerService {
     var offsetY = top;
     var mouseX = Math.floor(e.clientX - offsetX);
     var mouseY = Math.floor(e.clientY - offsetY);
-    for (let i = 0; i < 30; i++) {
+
+    while( i < 30 && found === false) {
+      i++;
       //if larry's points and john's points are close , make an offset between the numbers
       if (larry[i] - john[i] < 30) {
         ind = -10;
@@ -35,6 +40,7 @@ export class PlayerService {
         mouseY < this.config.chartHeight - top &&
         (num == 0 || num == 2)
       ) {
+        found = true;
         this.addScoreTochart(
           context,
           john[i],
@@ -49,6 +55,7 @@ export class PlayerService {
         mouseY < this.config.chartHeight - top &&
         (num == 1 || num == 2)
       ) {
+        found = true;
         this.addScoreTochart(
           context,
           larry[i],
@@ -122,6 +129,7 @@ export class PlayerService {
       context.strokeStyle = this.config.leftaxisColor;
       context.stroke();
     }
+
   }
 
 
@@ -138,4 +146,5 @@ export class PlayerService {
     const day = date.substring(6, 8);
     return year + '-' + month + '-' + day;
   }
+
 }

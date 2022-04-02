@@ -1,7 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
-import {  Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { PlayerService } from 'src/services/player.service';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {PlayerService} from 'src/services/player.service';
 
 @Component({
   selector: 'app-bar',
@@ -9,19 +9,21 @@ import { PlayerService } from 'src/services/player.service';
   styleUrls: ['./bar.component.css'],
 })
 export class BarComponent implements OnInit {
+
   name = '';
   subscriptionPlayers: Subscription;
   data: any;
   dates: string[] = [];
   johnPoints: number[] = [];
   larryPoints: number[] = [];
-  canvas;
   left: number;
   top: number;
+
   constructor(
     private playerService: PlayerService,
     private router: Router
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     var num = 2;
@@ -29,7 +31,7 @@ export class BarComponent implements OnInit {
       .getPlayers()
       .subscribe((players) => {
         this.name = this.router.url.substring(1);
-        //if it is not larry's or john's chart 
+        //if it is not larry's or john's chart
         if (this.name != 'john' && this.name != 'larry') {
           this.router.navigate(['/']);
         }
@@ -39,7 +41,6 @@ export class BarComponent implements OnInit {
         this.larryPoints = players.data.DAILY.dataByMember.players.larry.points;
 
         const canvas = <HTMLCanvasElement>document.getElementById('chart');
-        this.canvas = canvas;
         this.left = canvas.getBoundingClientRect().x;
         this.top = canvas.getBoundingClientRect().y;
 
@@ -52,6 +53,7 @@ export class BarComponent implements OnInit {
           this.playerService.config.chartWidth,
           this.playerService.config.chartHeight
         );
+
         if (this.name == 'john') {
           num = 0;
           this.playerService.drawPlayer(
@@ -83,6 +85,7 @@ export class BarComponent implements OnInit {
         }
 
         this.playerService.addHorizontalLines(context);
+
         canvas.addEventListener('click', (e) => {
           this.playerService.handleMouseMove(
             e,

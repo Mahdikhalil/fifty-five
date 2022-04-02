@@ -12,7 +12,6 @@ export class ConfigHttpService {
   initializeApp() {
     this.http.get('assets/config.json').subscribe((response) => {
       this.configService.config = <Config>response;
-      console.log(response);
     });
   }
 }

@@ -6,8 +6,6 @@ export class Config {
     columnTitleColor: string;
     columnFont: string;
     footerTitle:string;
-    footerColor:string;
-    footerFont: string;
     leftaxisColor: string;
     leftaxisFont: string;
 }
